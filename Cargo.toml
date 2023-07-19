@@ -1,5 +1,5 @@
 [package]
-name = "com-policy-config"
+name = "com_policy_config"
 version = "0.3.0-default-endpoint-only"
 edition = "2021"
 authors = ["sidit77"]
