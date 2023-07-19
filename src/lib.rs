@@ -26,12 +26,12 @@ unsafe impl ComInterface for IPolicyConfig {
 impl IPolicyConfig {
     pub unsafe fn SetDefaultEndpoint(
         &self,
-        device_name: impl IntoParam<PCWSTR>,
+        device_id: impl IntoParam<PCWSTR>,
         role: ERole,
     ) -> Result<()> {
         (Interface::vtable(self).SetDefaultEndpoint)(
             Interface::as_raw(self),
-            device_name.into_param().abi(),
+            device_id.into_param().abi(),
             role,
         )
         .ok()
