@@ -11,12 +11,17 @@ use windows::{
     Win32::Media::Audio::ERole,
 };
 
-pub const PolicyConfigClient: GUID = GUID::from_u128(0x870AF99C_171D_4F9E_AF0D_E63DF40C2BC9);
-
 #[repr(transparent)]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct IPolicyConfig(IUnknown);
+
 interface_hierarchy!(IPolicyConfig, IUnknown);
+
+pub const PolicyConfigClient: GUID = GUID::from_u128(0x870AF99C_171D_4F9E_AF0D_E63DF40C2BC9);
+
+unsafe impl ComInterface for IPolicyConfig {
+    const IID: GUID = GUID::from_u128(0xF8679F50_850A_41CF_9C72_430F290290C8);
+}
 
 impl IPolicyConfig {
     pub unsafe fn SetDefaultEndpoint(
@@ -31,10 +36,6 @@ impl IPolicyConfig {
         )
         .ok()
     }
-}
-
-unsafe impl ComInterface for IPolicyConfig {
-    const IID: GUID = GUID::from_u128(0xF8679F50_850A_41CF_9C72_430F290290C8);
 }
 
 unsafe impl Interface for IPolicyConfig {
