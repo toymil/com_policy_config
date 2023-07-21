@@ -8,7 +8,12 @@ use std::ffi::c_void;
 use windows::{
     core::{ComInterface, IUnknown, Interface, IntoParam, Result, GUID, HRESULT, PCWSTR},
     interface_hierarchy,
-    Win32::Media::Audio::ERole,
+    Devices::Custom::DeviceSharingMode,
+    Win32::{
+        Media::Audio::{ERole, WAVEFORMATEX},
+        System::Com::StructuredStorage::PROPVARIANT,
+        UI::Shell::PropertiesSystem::PROPERTYKEY,
+    },
 };
 
 #[repr(transparent)]
@@ -45,7 +50,19 @@ unsafe impl Interface for IPolicyConfig {
 #[repr(C)]
 #[doc(hidden)]
 #[allow(non_camel_case_types)]
+#[rustfmt::skip]
 pub struct IPolicyConfig_Vtbl {
     pub base__: ::windows::core::IUnknown_Vtbl,
+    pub GetMixFormat: unsafe extern "system" fn(this: *mut c_void, PCWSTR, *mut *mut WAVEFORMATEX) -> HRESULT,
+    pub GetDeviceFormat: unsafe extern "system" fn(this: *mut c_void, PCWSTR, i32, *mut *mut WAVEFORMATEX) -> HRESULT,
+    pub ResetDeviceFormat: unsafe extern "system" fn(this: *mut c_void, PCWSTR) -> HRESULT,
+    pub SetDeviceFormat: unsafe extern "system" fn(this: *mut c_void, PCWSTR, *mut WAVEFORMATEX, *mut WAVEFORMATEX) -> HRESULT,
+    pub GetProcessingPeriod: unsafe extern "system" fn(this: *mut c_void, PCWSTR, i32, *mut i64, *mut i64) -> HRESULT,
+    pub SetProcessingPeriod: unsafe extern "system" fn(this: *mut c_void, PCWSTR, *mut i64) -> HRESULT,
+    pub GetShareMode: unsafe extern "system" fn(this: *mut c_void, PCWSTR, *mut DeviceSharingMode) -> HRESULT,
+    pub SetShareMode: unsafe extern "system" fn(this: *mut c_void, PCWSTR, *mut DeviceSharingMode) -> HRESULT,
+    pub GetPropertyValue: unsafe extern "system" fn(this: *mut c_void, PCWSTR, i32, *const PROPERTYKEY, *mut PROPVARIANT) -> HRESULT,
+    pub SetPropertyValue: unsafe extern "system" fn(this: *mut c_void, PCWSTR, i32, *const PROPERTYKEY, *mut PROPVARIANT) -> HRESULT,
     pub SetDefaultEndpoint: unsafe extern "system" fn(this: *mut c_void, PCWSTR, ERole) -> HRESULT,
+    pub SetEndpointVisibility: unsafe extern "system" fn(this: *mut c_void, PCWSTR, i32) -> HRESULT,
 }
